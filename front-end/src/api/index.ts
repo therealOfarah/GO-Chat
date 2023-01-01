@@ -1,11 +1,12 @@
 let socket = new WebSocket("ws://localhost:8080/ws")
-let connect=()=>{
+let connect= (cb:any)=>{
   console.log("connecting")
   socket.onopen=()=>{
     console.log("Connected")
   }
   socket.onmessage = msg=>{
     console.log(msg)
+    cb(msg)
   }
   socket.onclose = event=>{
     console.log("Closed because of ", event)
