@@ -3,23 +3,27 @@ import { connect, sendMsg } from './api'
 import { Header } from './components/Header/Header'
 import './App.css'
 import { ChatHistory } from './components/ChatHistory/ChatHistory'
+import ChatInput from './components/ChatInput/ChatInput'
 
 function App() {
-  const[chatHistory, setChatHistory] = useState()
+  const[chatHistory, setChatHistory] = useState<any>()
   // connect()
-  function send(){
-    sendMsg("hello")
+  function send(event:any){
+    if(event.keyCode === 13) {
+    sendMsg(event.target.value);
+    event.target.value = "";
   }
-  function mounted(){
-    connect((msg:any)=>{
-      setChatHistory(msg)
-    })
   }
+
+  connect((msg:any)=>{
+    return setChatHistory([msg])
+  })
+  console.log(chatHistory)
   return (
     <div className="App">
       <Header/>
+      <ChatInput send={send}/>
       <ChatHistory chatHistory={chatHistory}/>
-      <button onClick={send}></button>
     </div>
   )
 }
